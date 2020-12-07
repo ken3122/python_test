@@ -17,7 +17,7 @@ def print_welcome():
 def eval_string(in_string):
     try:
         elements = ast.literal_eval(in_string)
-    except ValueError as error:
+    except (ValueError, SyntaxError) as error:
         print(error, file=sys.stderr)
         parser.print_help(sys.stderr)
         sys.exit(1)
@@ -50,12 +50,6 @@ def main():
         contents = args.string
     
     elements = eval_string(contents)
-    
-    try:
-        out = open(args.out, 'w')
-    except IOError as error:
-        print(error, file=sys.stderr)
-        sys.exit(1)
     
     if args.out is not None:
         out = open_file_w(args.out)
